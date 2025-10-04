@@ -1,30 +1,30 @@
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 
-// Função para gerar token de confirmação
-export function gerarTokenConfirmacao() {
+
+
+export function gerar_token() {
     return crypto.randomBytes(32).toString("hex");
 }
 
-// Função para enviar e-mail de confirmação
-export async function enviarEmailConfirmacao(destinatario, token) {
-    // Configure o transporter com seu serviço de e-mail
+
+export async function enviar_email(destinatario, token) {
     const transporter = nodemailer.createTransport({
-        service: "gmail", // ou outro serviço
+        service: "gmail",
         auth: {
-            user: "SEU_EMAIL@gmail.com",
-            pass: "SUA_SENHA_DE_APP"
+            user: "lucas.galonet.com@gmail.com",
+            pass: "mrom cgcv ikxi rwrn"
         }
     });
 
-    const urlConfirmacao = `http://localhost:3000/confirmar?token=${token}`;
+    const url = `http://localhost:3000/usuarios/confirmar?token=${token}`;
 
-    const mailOptions = {
-        from: 'SEU_EMAIL@gmail.com',
+    const opcoes_email = {
+        from: 'lucas.galonet.com@gmail.com',
         to: destinatario,
         subject: 'Confirme seu cadastro',
-        html: `<p>Clique no link para confirmar seu cadastro: <a href="${urlConfirmacao}">${urlConfirmacao}</a></p>`
+        html: `<p>Clique no link para confirmar seu cadastro: <a href="${url}">${url}</a></p>`
     };
 
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(opcoes_email);
 }

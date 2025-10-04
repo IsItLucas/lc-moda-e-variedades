@@ -30,7 +30,6 @@ app.use(session({
 	}
 }));
 
-
 app.use("/usuarios", rotas_usuario);
 app.use("/clientes", rotas_clientes);
 
