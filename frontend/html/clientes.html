@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Clientes | LC Moda e Varieadades</title>
+
+	<link rel="icon" type="image/png" sizes="32x32" href="../img/promo/favicon/icon-32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../img/promo/favicon/icon-16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="../img/promo/favicon/icon-apple-touch.png">
+
+	<link rel="stylesheet" href="../css/global.css">
+	<link rel="stylesheet" href="../css/gerenciamento.css">
+	<link rel="stylesheet" href="../css/clientes.css">
+
+	<script type="module" src="../js/clientes.js"></script>
+
+	<script type="module" src="../js/modules/popup.js"></script>
+	<script type="module" src="../js/modules/inner_html.js"></script>
+
+	<script src="https://kit.fontawesome.com/7525a27d59.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body id="body">
+	<header>
+		<img src="../img/promo/favicon/icon-1024.png" alt="Logo">
+		<h1>Gerenciamento de Clientes</h1>
+	</header>
+
+	<nav>
+		<div class="nav-button">
+			<i class="fa-solid fa-chart-line"></i><a href="../html/painel.html">Painel</a><br>
+		</div>
+		<div class="nav-button">
+			<i class="fa-solid fa-dolly"></i><a href="../html/produtos.html">Produtos</a><br>
+		</div>
+		<div class="nav-button active">
+			<i class="fa-solid fa-user"></i><a href="../html/clientes.html">Clientes</a><br>
+		</div>
+		<div class="nav-button">
+			<i class="fa-solid fa-bag-shopping"></i><a href="../html/vendas.html">Vendas</a><br>
+		</div>
+	</nav>
+
+	<main>
+		<section class="section-clientes">
+			<div class="top-clientes">
+				<div class="div-search-bar">
+					<button><i class="fa-solid fa-magnifying-glass"></i></button>
+					<input type="search" placeholder="Pesquisar cliente por nome, telefone ou e-mail..." class="search-bar" id="input-pesquisar-cliente" oninput="alterar_pagina_clientes(0)">
+				</div>
+				
+				<div class="layout-clientes">
+					<label for="sort-clientes"><i class="fa-solid fa-arrow-down-short-wide"></i> Ordernar por:</label>
+					<select name="sort-clientes" id="sort-clientes" oninput="alterar_pagina_clientes(0)">
+						<optgroup label="Alfabético">
+							<option value="nome-az">Nome A-Z</option>
+							<option value="nome-za">Nome Z-A</option>
+							<option value="email-az">E-mail A-Z</option>
+							<option value="email-za">E-mail Z-A</option>
+						</optgroup>
+						<optgroup label="Numérico">
+							<option value="valor-maior">Maior valor gasto</option>
+							<option value="valor-menor">Menor valor gasto</option>
+							<option value="compra-recente">Compra mais recente</option>
+							<option value="compra-antiga">Compra mais antiga</option>
+						</optgroup>
+					</select>
+					<br>
+					<label for="linhas-clientes"><i class="fa-solid fa-chart-bar"></i> Linhas por página:</label>
+					<select name="linhas-clientes" id="linhas-clientes" oninput="alterar_pagina_clientes(0)">
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="tabela-clientes-wrapper">
+				<table class="tabela-clientes">
+					<colgroup>
+						<col style="width: 25%;">
+						<col style="width: 15%;">
+						<col style="width: 30%;">
+						<col style="width: 15%;">
+						<col style="width: 15%;">
+					</colgroup>
+					<thead>
+						<tr>
+							<th><i class="fa-solid fa-user"></i> Nome</th>
+							<th><i class="fa-solid fa-phone"></i> Telefone</th>
+							<th><i class="fa-solid fa-envelope"></i> E-mail</th>
+							<th><i class="fa-solid fa-calendar"></i> Última Compra</th>
+							<th><i class="fa-solid fa-money-bills"></i> Gastos</th>
+						</tr>
+					</thead>
+					<tbody id="tabela-clientes-body">
+						<tr>
+							<td><i class="fa-solid fa-pen editar-cliente"></i> Nome do Cliente</td>
+							<td>(31) 91234-5678</td>
+							<td>cliente@email.com</td>
+							<td>11/08/2025</td>
+							<td>R$ 1.000,00</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						
+					</tfoot>
+				</table>
+			</div>
+
+			<br>
+			
+			<div class="tabela-clientes-footer">
+				<button class="primary" onclick="abrir_popup('popup-adicionar-cliente')"><i class="fa-solid fa-user-plus"></i> Adicionar Novo Cliente</button>
+				<div class="paginacao-clientes">
+					<p id="texto-total-clientes">0 — 0 de 0 clientes</p>
+					<button class="secondary" onclick="alterar_pagina_clientes(-1)"><i class="fa-solid fa-caret-left"></i></button>
+					<p id="texto-pagina-clientes">0 / 0</p>
+					<button class="secondary" onclick="alterar_pagina_clientes(1)"><i class="fa-solid fa-caret-right"></i></button>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<span class="popup" id="popup-adicionar-cliente">
+		<form class="conteudo-popup" id="form-adicionar-cliente">
+			<h2 class="popup-title"><i class="fa-solid fa-user-plus"></i> Adicionar Cliente</h2>
+			
+			<br>
+			
+			<div class="form-adicionar-cliente">
+				<label for="nome-cliente-add"><i class="fa-solid fa-file-signature"></i> Nome:</label>
+				<input type="text" name="nome-cliente-add" id="nome-cliente-add" required>
+
+				<br>
+
+				<label for="telefone-cliente-add"><i class="fa-solid fa-phone"></i> Telefone:</label>
+				<input type="text" name="telefone-cliente-add" id="telefone-cliente-add" placeholder="(00) 0000-0000" minlength="15" maxlength="15" required>
+
+				<br>
+
+				<label for="email-cliente-add"><i class="fa-solid fa-envelope"></i> E-mail:</label>
+				<input type="email" name="email-cliente-add" id="email-cliente-add" placeholder="cliente@email.com" required>
+			</div>
+
+			<div class="popup-botoes">
+				<button class="primary"><i class="fa-solid fa-circle-check"></i> Confirmar</button>
+				<button type="button" class="secondary" onclick="fechar_popup('popup-adicionar-cliente')"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+			</div>
+		</form>
+	</span>
+
+
+	<span class="popup" id="popup-editar-cliente">
+		<form class="conteudo-popup" id="form-editar-cliente">
+			<h2 class="popup-title"><i class="fa-solid fa-user-plus"></i> Editar Cliente</h2>
+			
+			<br>
+			
+			<div class="form-adicionar-cliente">
+				<div class="double">
+					<div>
+						<label for="id-cliente-edit"><i class="fa-solid fa-circle-info"></i> ID:</label>
+						<input type="number" name="id-cliente-edit" id="id-cliente-edit" disabled>
+					</div>
+
+					<div>
+						<label for="nome-cliente-edit"><i class="fa-solid fa-file-signature"></i> Nome:</label>
+						<input type="text" name="nome-cliente-edit" id="nome-cliente-edit" required>
+					</div>
+				</div>
+
+				<br>
+
+				<label for="telefone-cliente-edit"><i class="fa-solid fa-phone"></i> Telefone:</label>
+				<input type="text" name="telefone-cliente-edit" id="telefone-cliente-edit" placeholder="(00) 0000-0000" minlength="15" maxlength="15" required>
+
+				<br>
+
+				<label for="email-cliente-edit"><i class="fa-solid fa-envelope"></i> E-mail:</label>
+				<input type="email" name="email-cliente-edit" id="email-cliente-edit" placeholder="cliente@email.com" required>
+			</div>
+
+			<br>
+
+			<div style="text-align: center; width: 100%;">
+				<button class="flat" id="botao-excluir-cliente"><i class="fa-solid fa-trash"></i> Excluir Cliente</button>
+			</div>
+
+			<div class="popup-botoes">
+				<button class="primary"><i class="fa-solid fa-circle-check"></i> Salvar</button>
+				<button type="button" class="secondary" onclick="fechar_popup('popup-editar-cliente')"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+			</div>
+		</form>
+	</span>
+
+
+	<span class="popup" id="popup-message">
+		<div class="conteudo-popup">
+			<h2 class="popup-title" id="popup-message-title">Título</h2>
+			<br>
+			<p class="popup-subtitle" id="popup-message-text">Mensagem</p>
+			
+			<div class="popup-botoes">
+				<button type="button" class="primary" onclick="fechar_popup('popup-message')">OK</button>
+			</div>
+		</div>
+	</span>
+
+	<span class="popup" id="popup-question">
+		<div class="conteudo-popup">
+			<h2 class="popup-title" id="popup-question-title">Título</h2>
+			<br>
+			<p class="popup-subtitle" id="popup-question-text">Mensagem</p>
+			
+			<div class="popup-botoes">
+				<button class="primary" id="botao-question-sim"><i class="fa-solid fa-circle-check"></i> Sim</button>
+				<button class="secondary" id="botao-question-nao"><i class="fa-solid fa-xmark"></i> Não</button>
+			</div>
+		</div>
+	</span>
+</body>
+
+
+</html>

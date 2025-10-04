@@ -1,0 +1,221 @@
+/* ======= ESTILIZAÇÃO GLOBAL ======= */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root {
+	--color-primary: #ff5c8d;
+	--color-secondary: #544963;
+
+	--color-text-primary: #222222;
+	--color-text-primary-alt: #2b070d;
+	--color-text-inverse: #ffffff;
+
+	--color-bg-primary: #ffffff;
+	--color-bg-secondary: #fff7fd;
+
+	--color-border: #f3f3f3;
+	--color-border-dark: #cecece;
+	--color-shadow: #b100a80a;
+	--color-shadow-dark: #b100a825;
+
+	--spacing-xxs: 4px;
+	--spacing-xs: 8px;
+	--spacing-sm: 12px;
+	--spacing-md: 16px;
+	--spacing-lg: 24px;
+	--spacing-xl: 32px;
+	--spacing-xxl: 48px;
+
+	--border-primary: 12px;
+	--border-medium: 8px;
+	--border-small: 4px;
+	--border-round: 100px;
+
+	--transition-primary: 0.15s ease-out;
+	--transition-fast: 0.075s linear;
+	--transition-popup: 0.25s cubic-bezier(.11,.6,.49,1);
+}
+
+
+/* ======= CLASSES GLOBAIS ======= */
+* {
+	font-family: "Montserrat", sans-serif;
+	transition: all var(--transition-primary);
+}
+.no-scroll {
+	overflow: hidden;
+}
+
+
+/* ======= ELEMENTOS DE UI ======= */
+button {
+	cursor: pointer;
+	font-weight: bold;
+
+	position: relative;
+	bottom: 0px;
+
+	padding: var(--spacing-sm);
+	border-radius: var(--border-medium);
+	box-shadow: none;
+
+	filter: brightness(1.0);
+
+	font-size: medium;
+
+	/* transition: all var(--transition-fast); */
+}
+button:hover {
+	bottom: 2px;
+	filter: brightness(1.25);
+
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-xs) var(--color-shadow);
+}
+button:active {
+	bottom: -2px;
+	filter: brightness(0.75);
+
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-xxs) var(--color-shadow);
+}
+
+
+button.primary {
+	border: none;
+
+	color: var(--color-text-inverse);
+	background-color: var(--color-primary);
+}
+button.secondary {
+	border: solid 1px var(--color-border-dark);
+
+	color: var(--color-text-primary);
+	background-color: var(--color-bg-primary);
+}
+button.flat {
+	color: var(--color-primary);
+
+	border: none;
+	background: none;
+	box-shadow: none;
+}
+
+
+select,
+input {
+	color: var(--color-text-primary);
+	
+	border: solid 1px var(--color-border-dark);
+	border-radius: var(--border-small);
+
+	/* margin-left: var(--spacing-xs); */
+	margin-bottom: var(--spacing-sm);
+
+	padding: var(--spacing-xs);
+	font-size: medium;
+}
+select:focus,
+input:focus {
+	outline: none;
+
+	border: solid 1px var(--color-primary);
+	background-color: var(--color-bg-secondary);
+
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-xs) var(--color-shadow);
+}
+
+
+/* ======= POPUPS, LIGHT BOXES E MODAL BOXES ======= */
+.popup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	width: 100%;
+	height: 100%;
+
+	color: var(--color-text-primary);
+	background-color: rgba(0, 0, 0, 0.75);
+
+	visibility: hidden;
+	opacity: 0.0;
+	z-index: 3;
+
+	transition: all var(--transition-popup);
+}
+.popup-overlay.open {
+	visibility: visible;
+	opacity: 1.0;
+}
+
+
+.popup {
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	width: 100%;
+	height: 100%;
+
+	color: var(--color-text-primary);
+
+	visibility: hidden;
+	transform: scale(0.5);
+	opacity: 0.0;
+
+	z-index: 4;
+
+	transition: all var(--transition-popup);
+}
+.popup.open {
+	visibility: visible;
+	transform: scale(1);
+	opacity: 1.0;
+}
+
+
+.popup-title {
+	text-align: center;
+
+	color: var(--color-primary);
+
+	border-bottom: solid 2px var(--color-primary);
+
+	padding: var(--spacing-md);
+	margin: var(--spacing-md);
+}
+.popup-subtitle {
+	display: block;
+	text-align: center;
+	margin-bottom: var(--spacing-xl);
+}
+
+
+.popup-botoes {
+	margin-top: var(--spacing-xl);
+	margin-bottom: var(--spacing-md);
+
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-lg);
+}
+.popup-botoes > button {
+	width: 50%;
+}
+
+
+.conteudo-popup {
+	min-width: 300px;
+	max-width: 600px;
+
+	background-color: var(--color-bg-primary);
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-md) var(--color-shadow-dark);
+
+	border-radius: var(--spacing-sm);
+	padding: var(--spacing-lg) var(--spacing-xxl);
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+
+	transform: translate(-50%, -50%);
+}

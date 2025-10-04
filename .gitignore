@@ -1,0 +1,12 @@
+# Pastas
+trash/
+node_modules/
+sql/
+
+.vscode/
+
+# Arquivos
+backend/package-lock.json
+backend/sistema.sql
+
+.env

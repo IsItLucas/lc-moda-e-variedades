@@ -1,0 +1,226 @@
+/* Layout padrão para todas as páginas
+relacionadas ao gerenciamento de loja */
+
+/* ======= LAYOUT GLOBAL ======= */
+body {
+	background-color: var(--color-bg-secondary);
+	background: linear-gradient(135deg,rgba(255, 224, 247, 1) 0%, rgba(255, 207, 232, 1) 100%);
+	display: grid;
+	grid-template-areas:
+		"a-header a-header"
+		"a-nav a-main"
+		"a-footer a-footer";
+	grid-template-columns: 1fr 5fr;
+
+	/* gap: var(--spacing-lg); */
+	gap: 1px;
+
+	/* padding: var(--spacing-md); */
+	padding: 0;
+	margin: 0;
+}
+
+
+main {
+	min-height: 61.4vh;
+}
+
+
+table {
+	table-layout: fixed;
+}
+
+
+/* ======= HEADER ======= */
+header {
+	position: sticky;
+
+	display: flex;
+	align-items: center;
+
+	background-color: var(--color-primary);
+	color: var(--color-text-inverse);
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-md) var(--color-shadow);
+
+	padding: var(--spacing-xl);
+	/* border-radius: var(--border-primary); */
+
+	text-align: center;
+
+	grid-area: a-header;
+}
+header > h1 {
+	font-size: 275%;
+
+	position: absolute;
+	left: 50%;
+	
+	transform: translateX(-50%);
+
+	margin: 0;
+}
+
+
+header > img {
+	position: relative;
+
+	width: 72px;
+	bottom: 0;
+
+	filter: brightness(1);
+
+	box-shadow: none;
+}
+header > img:hover {
+	cursor: pointer;
+
+	bottom: 2px;
+	filter: brightness(1.25);
+
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-xs) var(--color-shadow);
+}
+header > img:active {
+	bottom: -2px;
+	filter: brightness(0.75);
+
+	box-shadow: 0 var(--spacing-xxs) var(--spacing-xxs) var(--color-shadow);
+}
+
+
+/* ======= NAVEGAÇÃO ======= */
+nav {
+	display: flex;
+	flex-direction: column;
+
+	background-color: var(--color-bg-primary);
+	/* box-shadow: 0 var(--spacing-sm) var(--spacing-md) var(--color-shadow); */
+	
+	border-radius: var(--border-primary);
+	padding: var(--spacing-md);
+	gap: var(--spacing-xs);
+
+	line-height: var(--spacing-xl);
+	min-height: 48vb;
+
+	font-size: large;
+
+	grid-area: a-nav;
+}
+
+.nav-button {
+	color: var(--color-text-primary);
+	background-color: var(--color-bg-primary);
+
+	border-radius: var(--border-primary);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	padding: var(--spacing-xs);
+	padding-left: var(--spacing-xs);
+
+	transition: all var(--transition-primary);
+}
+.nav-button > a {
+	color: var(--color-text-primary);
+
+	margin-left: var(--spacing-xs);
+	width: 100%;
+
+	text-decoration: none;
+
+	transition: all var(--transition-primary);
+}
+
+.nav-button:hover {
+	color: var(--color-primary);
+	background-color: var(--color-bg-secondary);
+
+	padding-left: var(--spacing-sm);
+}
+.nav-button:hover > a {
+	color: var(--color-primary);
+}
+
+.nav-button.active {
+	color: var(--color-text-inverse);
+	background-color: var(--color-primary);
+
+	border-left: solid 3px var(--color-primary);
+	/* border-top-left-radius: 0;
+	border-bottom-left-radius: 0; */
+
+	padding-left: var(--spacing-sm);
+
+	font-weight: bold;
+}
+.nav-button.active > a {
+	color: var(--color-text-inverse);
+}
+
+
+/* ======= CONTEÚDO PRINCIPAL ======= */
+main {
+	background-color: var(--color-bg-primary);
+	/* box-shadow: 0 var(--spacing-sm) var(--spacing-md) var(--color-shadow); */
+
+	border-radius: var(--spacing-sm);
+	padding: var(--spacing-lg);
+
+	grid-area: a-main;
+}
+main > h3 {
+	margin: 0;
+}
+
+
+/* ======= RODAPÉ ======= */
+footer {
+	color: var(--color-text-inverse);
+	background-color: var(--color-secondary);
+	box-shadow: 0 var(--spacing-sm) var(--spacing-md) var(--color-shadow);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	/* border-radius: var(--spacing-sm); */
+	padding: var(--spacing-xl);
+
+	line-height: var(--spacing-xxs);
+
+	text-align: center;
+
+	grid-area: a-footer;
+}
+
+.socials {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-weight: bold;
+
+	gap: var(--spacing-md);
+}
+.social {
+	display: flex;
+	align-items: center;
+
+	gap: var(--spacing-xxs);
+}
+.social > a {
+	color: var(--color-text-inverse);
+}
+
+.name {
+	display: flex;
+	align-items: center;
+
+	gap: var(--spacing-md);
+}
+.name img {
+	height: var(--spacing-xl);
+}
