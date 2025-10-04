@@ -4,6 +4,7 @@ import express from "express";
 import * as db from "../db.js";
 import * as crypt from "../modules/crypt.js";
 import { gerar_token, enviar_email } from "../modules/email.js";
+import session from "express-session";
 
 
 const router = express.Router();
@@ -36,7 +37,7 @@ router.get("/", async (req, res) => {
 
 
 router.get("/email/:email", async (req, res) => {
-	const usuario = obter_usuario_por_email(req.params.email);
+	const usuario = obter_usuario_por_email(req.params.email, true);
 
 	if (!usuario) {
 		return res.status(404).send("Usuário não encontrado");
@@ -49,7 +50,7 @@ router.get("/email/:email", async (req, res) => {
 router.get("/confirmar", async (req, res) => {
 	const { token } = req.query;
 	if (!token) {
-		return res.status(400).send("Token não informado");
+		return res.status(400).send("Token não informado.");
 	}
 
 	const conexao = await db.conectar();
@@ -75,6 +76,16 @@ router.get("/confirmar", async (req, res) => {
 });
 
 
+router.get("/logout", (req, res) => {
+	if (!req.session.user) {
+		return res.status(409).send("Nenhum usuário logado.");
+	}
+
+	req.session.destroy();
+	res.status(200).send("Sessão encerrada com sucesso.");
+});
+
+
 router.post("/login", async (req, res) => {
 	if (req.session.user) {
 		return res.status(409).send(`Já logado como: ${req.session.user.nome}. Faça logout primeiro!`);
@@ -82,7 +93,7 @@ router.post("/login", async (req, res) => {
 
 	const { email, senha } = req.body;
 
-	const usuario = await obter_usuario_por_email(email);
+	const usuario = await obter_usuario_por_email(email, true);
 	if (!usuario) {
 		return res.status(404).send("Usuário não encontrado.");
 	}
@@ -104,10 +115,14 @@ router.post("/login", async (req, res) => {
 
 
 router.post("/cadastrar", async (req, res) => {
+	if (await obter_usuario_por_email(req.body.email, false)) {
+		return res.status(409).send("E-mail já cadastrado. Tente outro.");
+	}
+
 	const { nome, email, senha } = req.body;
 
 	const conexao = await db.conectar();
-	const query = "INSERT INTO usuarios(nome, email, senha, token_confirmacao, confirmado) VALUES (?, ?, ?, ?, 0)";
+	const query = "INSERT INTO usuarios(nome, email, senha, token_confirmacao, confirmado) VALUES (?, ?, ?, ?, FALSE)";
 	const token = gerar_token();
 	const parametros = [
 		nome,
@@ -119,7 +134,7 @@ router.post("/cadastrar", async (req, res) => {
 	await conexao.execute(query, parametros);
 	await db.desconectar(conexao);
 
-	await enviar_email(email, token);
+	await enviar_email(email, token, nome);
 
 	return res.status(201).send("Usuário cadastrado com sucesso! Confirme seu e-mail para continuar.");
 });
@@ -148,13 +163,20 @@ router.delete("/deletar", async (req, res) => {
 	await conexao.execute(query_delete, [email]);
 	await db.desconectar(conexao);
 
+	req.session.destroy();
+
 	return res.status(200).send("Usuário deletado com sucesso.");
 });
 
 
-async function obter_usuario_por_email(email) {
+async function obter_usuario_por_email(email, confirmado) {
 	const conexao = await db.conectar();
-	const query = "SELECT * FROM usuarios WHERE email = ?";
+
+	let query = "SELECT * FROM usuarios WHERE email = ? AND confirmado = TRUE";
+	if (!confirmado) {
+		query = "SELECT * FROM usuarios WHERE email = ?";
+	}
+
 	const parametros = [email];
 	const [resultado] = await conexao.execute(query, parametros);
 
