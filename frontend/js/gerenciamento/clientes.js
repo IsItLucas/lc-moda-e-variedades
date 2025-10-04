@@ -1,5 +1,5 @@
-import { URL } from "../js/modules/fetch.js"
-import { abrir_popup, fechar_popup } from "../js/modules/popup.js";
+import { URL } from "../modules/fetch.js"
+import { abrir_popup, fechar_popup } from "../modules/popup.js";
 
 
 Object.assign(window, {

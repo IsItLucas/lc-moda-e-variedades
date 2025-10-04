@@ -1,9 +1,9 @@
 import express from "express";
 
 
-import * as db from "../database.js";
-import * as crypt from "../crypt.js";
-import { gerar_token, enviar_email } from "../email.js";
+import * as db from "../db.js";
+import * as crypt from "../modules/crypt.js";
+import { gerar_token, enviar_email } from "../modules/email.js";
 
 
 const router = express.Router();

@@ -1,5 +1,5 @@
 import express from "express";
-import * as db from "../database.js";
+import * as db from "../db.js";
 
 
 const router = express.Router();
@@ -24,13 +24,13 @@ router.post("/adicionar", async (req, res) => {
 	const parametros = [
 		cliente.nome,
 		cliente.telefone,
-		cliente.email]
-	;
+		cliente.email
+	];
 
 	await conexao.execute(query, parametros);
 	await db.desconectar(conexao);
 
-	return res.status(201).send("Cliente adicionado com sucesso");
+	return res.status(201).send("Cliente adicionado com sucesso.");
 });
 
 
@@ -44,12 +44,12 @@ router.post("/editar", async (req, res) => {
 		cliente.telefone,
 		cliente.email,
 		cliente.id
-];
+	];
 
 	await conexao.execute(query, parametros);
 	await db.desconectar(conexao);
 
-	return res.status(201).send("Cliente editado com sucesso");
+	return res.status(201).send("Cliente editado com sucesso.");
 });
 
 
@@ -63,7 +63,7 @@ router.delete("/deletar/:id", async (req, res) => {
 	await conexao.execute(query, parametros);
 	await db.desconectar(conexao);
 
-	return res.status(201).send("Cliente excluído com sucesso");
+	return res.status(201).send("Cliente excluído com sucesso.");
 });
 
 

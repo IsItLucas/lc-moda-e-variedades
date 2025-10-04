@@ -1,7 +1,5 @@
 import mysql from "mysql2/promise";
 
-import * as crypt from "./crypt.js";
-
 
 export async function conectar() {
 	const conexao = await mysql.createConnection({

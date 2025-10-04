@@ -5,7 +5,7 @@ function on_load() {
 	const html = `
 		<footer>
 			<div class="name">
-				<img src="../img/promo/logo.png" alt="Logo">
+				<img src="../img/../promo/logo.png" alt="Logo">
 				<p>Luiza Carla Deodoro &copy; 2025</p>
 			</div>
 			<br><br><br><br>
