@@ -1,7 +1,7 @@
 import express from "express";
 
-import * as db from "./database.js";
-import * as crypt from "./crypt.js";
+import * as db from "../database.js";
+import * as crypt from "../crypt.js";
 
 
 const router = express.Router();

@@ -33,7 +33,7 @@ async function on_load() {
 
 async function carregar_clientes() {
 	try {
-		const resposta = await fetch(`${URL}/clientes`)
+		const resposta = await fetch(`${URL}/clientes/`)
 		if (!resposta.ok) {
 			throw new Error(`${resposta.status} ${resposta.statusText}\n${resposta.url}`);
 		};
