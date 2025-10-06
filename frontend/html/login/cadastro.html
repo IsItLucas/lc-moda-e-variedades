@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Cadastro | LC Moda e Varieadades</title>
+
+	<link rel="icon" type="image/png" sizes="32x32" href="../../img/promo/favicon/icon-32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../img/promo/favicon/icon-16.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="../../img/promo/favicon/icon-apple-touch.png">
+
+	<link rel="stylesheet" href="../../css/global.css">
+	<link rel="stylesheet" href="../../css/popup.css">
+	<link rel="stylesheet" href="../../css/login/login.css">
+
+	<script type="module" src="../../js/login/cadastro.js"></script>
+
+	<script type="module" src="../../js/modules/popup.js"></script>
+
+	<script src="https://kit.fontawesome.com/7525a27d59.js" crossorigin="anonymous"></script>
+</head>
+
+
+<body id="body">
+	<header>
+		<img src="../../img/promo/logo.png" alt="Logo" class="logo">
+	</header>
+
+	<br>
+
+	<main>
+		<h2>Cadastro</h2>
+
+		<hr><br>
+
+		<form onsubmit="cadastrar(event)">
+			<label for="nome"><i class="fa-solid fa-file-signature"></i> Nome completo:</label><br>
+			<input type="text" name="nome" id="nome" placeholder="Digite seu nome completo..." required><br>
+
+			<label for="email"><i class="fa-solid fa-envelope"></i> E-mail:</label><br>
+			<input type="email" name="email" id="email" placeholder="Digite seu e-mail..." required><br>
+
+			<label for="senha"><i class="fa-solid fa-lock"></i>Senha:</label><br>
+			<input type="password" name="senha" id="senha" placeholder="Digite sua senha..." required><br>
+
+			<label for="confirmar-senha"><i class="fa-solid fa-lock"></i>Confirmar senha:</label><br>
+			<input type="password" name="confirmar-senha" id="confirmar-senha" placeholder="Confirme sua senha..." required><br>
+
+			<button class="primary" id="botao-cadastrar">Cadastrar</button>
+
+			<br><hr>
+
+			<br><br>
+			<span>Já possui uma conta? <a href="./login.html">Faça login</a></span>
+		</form>
+	</main>
+</body>
+
+
+</html>

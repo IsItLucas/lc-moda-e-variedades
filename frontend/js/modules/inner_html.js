@@ -1,3 +1,6 @@
+import { URL } from "../modules/fetch.js"
+
+
 window.addEventListener("DOMContentLoaded", on_load);
 
 
@@ -5,7 +8,7 @@ function on_load() {
 	const html = `
 		<footer>
 			<div class="name">
-				<img src="../img/../promo/logo.png" alt="Logo">
+				<img src="../../img/promo/logo.png" alt="Logo">
 				<p>Luiza Carla Deodoro &copy; 2025</p>
 			</div>
 			<br><br><br><br>
@@ -24,4 +27,36 @@ function on_load() {
 	
 	const body = document.getElementById("body");
 	body.insertAdjacentHTML("beforeend", html);
+}
+
+
+export async function criar_nav_gerenciamento() {
+	const html = `
+		<nav>
+			<div class="nav-button">
+				<i class="fa-solid fa-chart-line"></i><a href="../html/painel.html">Painel</a><br>
+			</div>
+			<div class="nav-button">
+				<i class="fa-solid fa-dolly"></i><a href="../html/produtos.html">Produtos</a><br>
+			</div>
+			<div class="nav-button active">
+				<i class="fa-solid fa-user"></i><a href="../html/clientes.html">Clientes</a><br>
+			</div>
+			<div class="nav-button">
+				<i class="fa-solid fa-bag-shopping"></i><a href="../html/vendas.html">Vendas</a><br>
+			</div>
+		</nav>
+	`;
+
+	const body = document.getElementById("body");
+	body.insertAdjacentHTML("beforeend", html);
+
+	const resposta = await fetch(`${URL}/usuarios/sessao`, { credentials: "include" });
+	const dados = await resposta.json();
+	console.log(dados);
+	if (dados.logado) {
+		// Usuário está logado, use dados.usuario.nome, etc.
+	} else {
+		// Não está logado
+	}
 }

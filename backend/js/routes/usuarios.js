@@ -25,6 +25,15 @@ router.get("/dashboard", autenticar, (req, res) => {
 });
 
 
+router.get("/sessao", (req, res) => {
+	if (req.session.user) {
+		return res.status(200).json({ logado: true, usuario: req.session.user });
+	}
+
+	return res.status(200).json({ logado: false });
+});
+
+
 router.get("/", async (req, res) => {
 	const conexao = await db.conectar();
 	const query = "SELECT * FROM usuarios";
@@ -93,9 +102,13 @@ router.post("/login", async (req, res) => {
 
 	const { email, senha } = req.body;
 
-	const usuario = await obter_usuario_por_email(email, true);
+	const usuario = await obter_usuario_por_email(email, false);
 	if (!usuario) {
 		return res.status(404).send("Usuário não encontrado.");
+	}
+
+	if (usuario.confirmado == false) {
+		return res.status(403).send("Usuário não confirmado. Verifique seu email.");
 	}
 
 	const senha_correta = await crypt.comparar(senha, usuario.senha);
@@ -109,17 +122,23 @@ router.post("/login", async (req, res) => {
 		email: usuario.email,
 		tipo: usuario.tipo
 	};
-	res.status(200).send("Login realizado com sucesso: " + usuario.nome + " (" + usuario.tipo + ")");
-}
-);
+	req.session.save();
+
+	return res.status(200).send("Login realizado com sucesso: " + usuario.nome + " (" + usuario.tipo + ")");
+});
 
 
 router.post("/cadastrar", async (req, res) => {
-	if (await obter_usuario_por_email(req.body.email, false)) {
-		return res.status(409).send("E-mail já cadastrado. Tente outro.");
+	const { nome, email, senha } = req.body;
+
+	const emailRegex = /^[\w.-]+@(?:gmail|outlook|hotmail|yahoo|icloud|bol|uol|terra|live|msn|aol|zoho|protonmail|yandex)\.(com|com\.br|net|org|br)$/i;
+	if (!emailRegex.test(email)) {
+		return res.status(400).send("E-mail inválido ou provedor não suportado. Use um e-mail dos principais provedores.");
 	}
 
-	const { nome, email, senha } = req.body;
+	if (await obter_usuario_por_email(email, false)) {
+		return res.status(409).send("E-mail já cadastrado. Tente outro.");
+	}
 
 	const conexao = await db.conectar();
 	const query = "INSERT INTO usuarios(nome, email, senha, token_confirmacao, confirmado) VALUES (?, ?, ?, ?, FALSE)";

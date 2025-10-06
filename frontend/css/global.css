@@ -5,6 +5,7 @@
 :root {
 	--color-primary: #ff5c8d;
 	--color-secondary: #544963;
+	--color-disabled: #969696;
 
 	--color-text-primary: #222222;
 	--color-text-primary-alt: #2b070d;
@@ -16,7 +17,7 @@
 	--color-border: #f3f3f3;
 	--color-border-dark: #cecece;
 	--color-shadow: #b100a80a;
-	--color-shadow-dark: #b100a825;
+	--color-shadow-dark: #68006341;
 
 	--spacing-xxs: 4px;
 	--spacing-xs: 8px;
@@ -65,13 +66,13 @@ button {
 
 	/* transition: all var(--transition-fast); */
 }
-button:hover {
+button:hover:not(:disabled) {
 	bottom: 2px;
 	filter: brightness(1.25);
 
 	box-shadow: 0 var(--spacing-xxs) var(--spacing-xs) var(--color-shadow);
 }
-button:active {
+button:active:not(:disabled) {
 	bottom: -2px;
 	filter: brightness(0.75);
 
@@ -98,6 +99,9 @@ button.flat {
 	background: none;
 	box-shadow: none;
 }
+button:disabled {
+	background-color: var(--color-disabled);
+}
 
 
 select,
@@ -121,4 +125,25 @@ input:focus {
 	background-color: var(--color-bg-secondary);
 
 	box-shadow: 0 var(--spacing-xxs) var(--spacing-xs) var(--color-shadow);
+}
+
+
+a {
+	position: relative;
+	bottom: 0;
+
+	color: var(--color-primary);
+	text-decoration: none;
+	font-weight: bold;
+
+	filter: brightness(1.0);
+}
+a:hover {
+	text-decoration: underline;
+	filter: brightness(1.25);
+	bottom: 2px;
+}
+a:visited {
+	filter: brightness(1.5);
+	bottom: -2px;
 }

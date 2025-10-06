@@ -17,8 +17,12 @@ import rotas_clientes from "./routes/clientes.js";
 const app = express();
 
 
-app.use(cors());
 app.use(express.json());
+
+app.use(cors({
+    origin: "http://127.0.0.1:5500", // ou o endereço do seu frontend
+    credentials: true
+}));
 
 app.use(session({
 	secret: process.env.SESSION_SECRET,
@@ -26,8 +30,8 @@ app.use(session({
 	saveUninitialized: false,
 	cookie: {
 		secure: false,
-		maxAge: 1000 * 60 * 60 * 12
-	}
+		maxAge: 1000 * 60 * 60 * 24 * 7
+	},
 }));
 
 app.use("/usuarios", rotas_usuario);

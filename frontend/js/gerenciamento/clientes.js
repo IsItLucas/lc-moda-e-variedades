@@ -1,5 +1,6 @@
 import { URL } from "../modules/fetch.js"
-import { abrir_popup, fechar_popup } from "../modules/popup.js";
+import { abrir_popup, fechar_popup, mostrar_mensagem, perguntar } from "../modules/popup.js";
+import { criar_nav_gerenciamento } from "../modules/inner_html.js";
 
 
 Object.assign(window, {
@@ -24,6 +25,8 @@ let tabela_clientes_paginas = 0;
 
 
 async function on_load() {
+	criar_nav_gerenciamento();
+
 	await carregar_clientes();
 
 	configurar_botoes();
@@ -335,44 +338,4 @@ function ordenar_clientes(criterio) {
 				return 0;
 		}
   });
-}
-
-
-function mostrar_mensagem(titulo, texto) {
-	const title_element = $("popup-message-title");
-	const text_element = $("popup-message-text");
-
-	title_element.innerText = titulo;
-	text_element.innerText = texto;
-
-	abrir_popup("popup-message");
-}
-
-
-function perguntar(titulo, texto, callback_sim, callback_nao) {
-	const title_element = $("popup-question-title");
-	const text_element = $("popup-question-text");
-
-	title_element.innerText = titulo;
-	text_element.innerText = texto;
-
-	let botao_sim = $("botao-question-sim");
-	let botao_nao = $("botao-question-nao");
-
-	const novo_sim = botao_sim.cloneNode(true);
-	botao_sim.parentNode.replaceChild(novo_sim, botao_sim);
-	botao_sim = novo_sim;
-
-	const novo_nao = botao_nao.cloneNode(true);
-	botao_nao.parentNode.replaceChild(novo_nao, botao_nao);
-	botao_nao = novo_nao;
-
-	botao_sim.addEventListener("click", (event) => {
-		callback_sim();
-	});
-	botao_nao.addEventListener("click", (event) => {
-		callback_nao();
-	});
-
-	abrir_popup("popup-question");
 }
