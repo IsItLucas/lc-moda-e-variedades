@@ -3,23 +3,16 @@ import express from "express";
 
 import * as db from "../db.js";
 import * as crypt from "../modules/crypt.js";
+
 import { gerar_token, enviar_email } from "../modules/email.js";
-import session from "express-session";
+import { req_login, req_high_access } from "../modules/middlewares.js";
+// import session from "express-session";
 
 
 const router = express.Router();
 
 
-function autenticar(req, res, next) {
-	if (req.session.user) {
-		next();
-	} else {
-		res.status(401).send("Usuário não autenticado. Faça login primeiro.");
-	}
-}
-
-
-router.get("/dashboard", autenticar, (req, res) => {
+router.get("/dashboard", req_login, (req, res) => {
 	const usuario = req.session.user.nome;
 	res.status(200).send(`Bem-vindo, ${usuario}!`);
 });
@@ -34,7 +27,7 @@ router.get("/sessao", (req, res) => {
 });
 
 
-router.get("/", async (req, res) => {
+router.get("/", req_high_access, async (req, res) => {
 	const conexao = await db.conectar();
 	const query = "SELECT * FROM usuarios";
 	const [resultado] = await conexao.execute(query);
@@ -85,7 +78,7 @@ router.get("/confirmar", async (req, res) => {
 });
 
 
-router.get("/logout", (req, res) => {
+router.get("/logout", req_login, (req, res) => {
 	if (!req.session.user) {
 		return res.status(409).send("Nenhum usuário logado.");
 	}
@@ -159,7 +152,7 @@ router.post("/cadastrar", async (req, res) => {
 });
 
 
-router.delete("/deletar", async (req, res) => {
+router.delete("/deletar", req_login, async (req, res) => {
 	const { email, senha } = req.body;
 
 	const conexao = await db.conectar();

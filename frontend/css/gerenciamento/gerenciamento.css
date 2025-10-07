@@ -59,6 +59,44 @@ header > h1 {
 
 	margin: 0;
 }
+.conta {
+	position: absolute;
+
+	right: var(--spacing-xl);
+	top: 50%;
+
+	transform: translateY(-50%);
+
+	min-width: 100px;
+	max-width: 100px;
+
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+	gap: var(--spacing-xs);
+}
+.conta > button {
+	height: 0;
+	
+	font-size: xx-large;
+
+	background: none;
+	border: none;
+
+	color: var(--color-text-inverse);
+}
+.conta > p {
+	max-height: 38px;
+
+	text-align: center;
+
+	font-weight: bold;
+
+	overflow: hidden;
+	white-space: wrap;
+	text-overflow: ellipsis;
+}
 
 
 header > img {

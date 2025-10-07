@@ -34,8 +34,18 @@ app.use(session({
 	},
 }));
 
+
 app.use("/usuarios", rotas_usuario);
 app.use("/clientes", rotas_clientes);
+
+// app.use((req, res) => {
+//   res.status(403).sendFile(path.join(__dirname, '../frontend/html/erros/unauthorized.html'));
+// });
+
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).sendFile(path.join(__dirname, '../frontend/html/erros/500.html'));
+// });
 
 
 app.get("/", (req, res) => {

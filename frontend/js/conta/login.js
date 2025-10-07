@@ -1,4 +1,4 @@
-import { URL } from "../modules/fetch.js"
+import { url } from "../modules/fetch.js"
 import { abrir_popup, fechar_popup, mostrar_mensagem } from "../modules/popup.js";
 
 
@@ -17,7 +17,7 @@ export async function login() {
 	const senha = $("senha").value;
 
 	try {
-		const resposta = await fetch(`${URL}/usuarios/login`, {
+		const resposta = await fetch(`${url}/usuarios/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ email, senha }),
@@ -33,6 +33,9 @@ export async function login() {
 			}
 			if (resposta.status == 404) {
 				throw new Error("Usuário não encontrado.");
+			}
+			if (resposta.status == 409) {
+				throw new Error("Já logado em outra conta. Faça logout primeiro!");
 			}
 
 			throw new Error(`${resposta.status} ${resposta.statusText}\n${resposta.url}`);

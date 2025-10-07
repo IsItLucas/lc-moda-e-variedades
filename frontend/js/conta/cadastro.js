@@ -1,4 +1,4 @@
-import { URL } from "../modules/fetch.js"
+import { url } from "../modules/fetch.js"
 import { abrir_popup, fechar_popup, mostrar_mensagem } from "../modules/popup.js";
 
 
@@ -40,7 +40,7 @@ export async function cadastrar(event) {
 			throw new Error("As senhas não coincidem.");
 		}
 
-		const resposta = await fetch(`${URL}/usuarios/cadastrar`, {
+		const resposta = await fetch(`${url}/usuarios/cadastrar`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ nome, email, senha }),

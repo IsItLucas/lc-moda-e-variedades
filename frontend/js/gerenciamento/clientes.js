@@ -1,4 +1,4 @@
-import { URL } from "../modules/fetch.js"
+import { url, get_sessao } from "../modules/fetch.js"
 import { abrir_popup, fechar_popup, mostrar_mensagem, perguntar } from "../modules/popup.js";
 import { criar_nav_gerenciamento } from "../modules/inner_html.js";
 
@@ -7,7 +7,8 @@ Object.assign(window, {
 	abrir_popup,
 	fechar_popup,
 	alterar_pagina_clientes,
-	botao_editar_clicado
+	botao_editar_clicado,
+	redirecionar_login
 });
 
 
@@ -17,8 +18,9 @@ window.addEventListener("DOMContentLoaded", on_load);
 const $ = (element) => document.getElementById(element);
 
 
-let clientes = [];
+let sessao = { logado: false };
 
+let clientes = [];
 
 let tabela_clientes_pagina = 0;
 let tabela_clientes_paginas = 0;
@@ -26,17 +28,55 @@ let tabela_clientes_paginas = 0;
 
 async function on_load() {
 	criar_nav_gerenciamento();
-
-	await carregar_clientes();
-
 	configurar_botoes();
 	configurar_inputs_telefone();
+	configurar_usuario();
+
+	await carregar_clientes();
+}
+
+
+async function configurar_usuario() {
+	const nome_usuario = $("nome-usuario");
+	nome_usuario.innerText = "Carregando...";
+
+	sessao = await get_sessao();
+
+	if (sessao.logado) {
+		nome_usuario.innerText = sessao.usuario.nome;
+
+		const permitidos = ["admin", "dev"];
+		if (!permitidos.includes(sessao.usuario.tipo)) {
+			window.location.href = "../erros/unauthorized.html" // pagina 403 unauthorized
+		}
+	} else {
+		nome_usuario.innerText = "";
+		window.location.href = "../conta/login.html";
+	}
+	console.log(sessao);
+}
+
+
+function redirecionar_login() {
+	if (!sessao.logado) {
+		window.location.href = "../conta/login.html"
+	} else {
+		window.location.href = "" // pagina de gerenciamento de conta
+	}
 }
 
 
 async function carregar_clientes() {
+	const container = $("tabela-clientes-body");
+	const texto_paginacao = $("texto-pagina-clientes");
+	const texto_total = $("texto-total-clientes");
+
+	container.innerHTML = "<p>Carregando clientes...</p>";
+	texto_paginacao.innerText = "0 / 0";
+	texto_total.innerText = "0 — 0 de 0 clientes";
+
 	try {
-		const resposta = await fetch(`${URL}/clientes/`)
+		const resposta = await fetch(`${url}/clientes/`, { credentials: "include" });
 		if (!resposta.ok) {
 			throw new Error(`${resposta.status} ${resposta.statusText}\n${resposta.url}`);
 		};
@@ -65,10 +105,11 @@ async function adicionar_cliente() {
 	};
 
 	try {
-		const resposta = await fetch(`${URL}/clientes/adicionar`, {
+		const resposta = await fetch(`${url}/clientes/adicionar`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(cliente)
+			body: JSON.stringify(cliente),
+			credentials: "include"
 		});
 
 		if (!resposta.ok) {
@@ -119,10 +160,11 @@ async function editar_cliente() {
 	};
 
 	try {
-		const resposta = await fetch(`${URL}/clientes/editar`, {
+		const resposta = await fetch(`${url}/clientes/editar`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(cliente)
+			body: JSON.stringify(cliente),
+			credentials: "include"
 		});
 
 		if (!resposta.ok) {
@@ -143,8 +185,9 @@ async function excluir_cliente() {
 	const id = $("id-cliente-edit").value;
 
 	try {
-		const resposta = await fetch(`${URL}/clientes/deletar/${id}`, {
+		const resposta = await fetch(`${url}/clientes/deletar/${id}`, {
 			method: "DELETE",
+			credentials: "include"
 		});
 
 		if (!resposta.ok) {
@@ -269,8 +312,8 @@ async function listar_clientes() {
 				<td><i class="fa-solid fa-pen editar-cliente" onclick='botao_editar_clicado(this)' data-id="${cliente.id}"></i> ${cliente.nome}</td>
 				<td>${cliente.telefone}</td>
 				<td>${cliente.email}</td>
-				<td>11/08/2025</td>
-				<td>R$ 1.000,00</td>
+				<td>DD/MM/AAAA</td>
+				<td>R$ 0,00</td>
 			</tr>`;
 		
 		let texto = (tabela_clientes_pagina + 1) + " / " + tabela_clientes_paginas;

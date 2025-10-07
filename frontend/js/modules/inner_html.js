@@ -1,4 +1,4 @@
-import { URL } from "../modules/fetch.js"
+import { url } from "../modules/fetch.js"
 
 
 window.addEventListener("DOMContentLoaded", on_load);
@@ -51,12 +51,10 @@ export async function criar_nav_gerenciamento() {
 	const body = document.getElementById("body");
 	body.insertAdjacentHTML("beforeend", html);
 
-	const resposta = await fetch(`${URL}/usuarios/sessao`, { credentials: "include" });
+	const resposta = await fetch(`${url}/usuarios/sessao`, { credentials: "include" });
 	const dados = await resposta.json();
-	console.log(dados);
-	if (dados.logado) {
-		// Usuário está logado, use dados.usuario.nome, etc.
-	} else {
-		// Não está logado
+	
+	if (!dados.logado) {
+		return;
 	}
 }
